@@ -64,13 +64,10 @@ export class ProductsService {
         id: id,
         ...updateProductDto
       })
-
       if (!product) {
         throw new BadRequestException(`Product with id:${id} not found`)
       }
-
       await this.productRepository.save(product)
-
       return product
     } catch (err) {
       this.handleDB(err)
