@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { Product } from './entities/product.entity';
 import { PaginationDto } from 'src/common/dtos/pagination.dtos';
 import { validate as isUUID } from 'uuid'
+import { title } from 'process';
 
 @Injectable()
 export class ProductsService {
@@ -43,7 +44,11 @@ export class ProductsService {
     if (isUUID(term)) {
       product = await this.productRepository.findOneBy({ id: term })
     } else {
-      product = await this.productRepository.findOneBy({ slug: term })
+      const queryBuilder = this.productRepository.createQueryBuilder()
+      product = await queryBuilder.where('UPPER(title)= :title or slug= :slug', {
+        title: term.toUpperCase(),
+        slug: term.toLowerCase()
+      }).getOne()
     }
 
     if (!product) {
@@ -52,8 +57,25 @@ export class ProductsService {
     return product
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  async update(id: string, updateProductDto: UpdateProductDto) {
+
+    try {
+      const product = await this.productRepository.preload({
+        id: id,
+        ...updateProductDto
+      })
+
+      if (!product) {
+        throw new BadRequestException(`Product with id:${id} not found`)
+      }
+
+      await this.productRepository.save(product)
+
+      return product
+    } catch (err) {
+      this.handleDB(err)
+    }
+
   }
 
   async remove(id: string) {
