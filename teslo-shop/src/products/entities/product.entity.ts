@@ -42,6 +42,14 @@ export class Product {
   @Column('text')
   gender: string
 
+  // Tags 
+
+  @Column({
+    type: 'text',
+    default: []
+  })
+  tags: string[]
+
   // Verificacion antes de insertar en la base de datos 
   // usando el decorador utilizado
   @BeforeInsert()
