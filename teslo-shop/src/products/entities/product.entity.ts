@@ -1,4 +1,5 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { ProductImage } from './product-image.entity'
 
 @Entity()
 export class Product {
@@ -73,5 +74,13 @@ export class Product {
       .replaceAll("'", '')
   }
 
+  //Images 
+
+  @OneToMany(
+    () => ProductImage,
+    (productImage) => productImage.product,
+    { cascade: true }
+  )
+  images?: ProductImage
 
 }

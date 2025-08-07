@@ -6,7 +6,6 @@ import { Repository } from 'typeorm';
 import { Product } from './entities/product.entity';
 import { PaginationDto } from 'src/common/dtos/pagination.dtos';
 import { validate as isUUID } from 'uuid'
-import { title } from 'process';
 
 @Injectable()
 export class ProductsService {
