@@ -19,4 +19,8 @@
 docker compose up -d
 ```
 
-6. Start proyect ```yarn start:dev```
+6. Execute the Seed endpoint 
+```
+http:://localhost:3000/api/seed
+```
+7. Start proyect ```yarn start:dev```
