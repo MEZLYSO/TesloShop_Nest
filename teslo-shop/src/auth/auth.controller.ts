@@ -3,6 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
+import { GetUser } from './decorators/get-user.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -20,7 +21,9 @@ export class AuthController {
 
   @Get('private')
   @UseGuards(AuthGuard())
-  testPrivateRoute() {
+  testPrivateRoute(
+    @GetUser()
+  ) {
     return 'Route private!'
   }
 
